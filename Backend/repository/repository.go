@@ -10,7 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-/***************************************************************BASE DE DATOS EN MEMORIA PARA LOS VEHICULOS*************************************************************/
+/************************************************************BASE DE DATOS EN MEMORIA PARA LOS VEHICULOS Y USUARIOS************************************************************/
 //PAQUETE SQLX: go get -u github.com/jmoiron/sqlx
 
 // https://go.dev/doc/faq#guarantee_satisfies_interface

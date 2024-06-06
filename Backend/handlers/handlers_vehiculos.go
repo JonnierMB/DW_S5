@@ -27,7 +27,7 @@ func NewHandlerVehiculo(controller *controllers.Controller) (*HandlerVehiculos, 
 
 // Traer todos los Vehiculos almacenados en la base de datos
 func (hc *HandlerVehiculos) ListarVehiculos(w http.ResponseWriter, r *http.Request) { //Handler para peticiones GET
-	comentarios, err := hc.controller.ListarVehiculos(100, 0)
+	vehiculos, err := hc.controller.ListarVehiculos(100, 0)
 	if err != nil {
 		log.Printf("fallo al leer Vehiculos, con error: %s", err.Error())
 		http.Error(w, "fallo al leer Vehiculos", http.StatusInternalServerError)
@@ -35,7 +35,7 @@ func (hc *HandlerVehiculos) ListarVehiculos(w http.ResponseWriter, r *http.Reque
 	}
 	w.Header().Set("Content-Type", "application/json") //DEBE IR ANTES QUE WRITE HEADER
 	w.WriteHeader(http.StatusOK)
-	w.Write(comentarios)
+	w.Write(vehiculos)
 }
 
 //Función para obtener un comentario especifico
@@ -43,7 +43,7 @@ func (hc *HandlerVehiculos) ListarVehiculos(w http.ResponseWriter, r *http.Reque
 func (hc *HandlerVehiculos) TraerVehiculos(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	comentario, err := hc.controller.TraerVehiculos(id)
+	vehiculo, err := hc.controller.TraerVehiculos(id)
 	if err != nil {
 		log.Printf("falla al leer un comentario, con error %s", err.Error())
 		w.WriteHeader(http.StatusNotFound)
@@ -53,7 +53,7 @@ func (hc *HandlerVehiculos) TraerVehiculos(w http.ResponseWriter, r *http.Reques
 
 	w.Header().Set("Content-Type", "applicaiton/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(comentario)
+	w.Write(vehiculo)
 }
 
 // Función para actualizar comentario

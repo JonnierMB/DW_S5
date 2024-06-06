@@ -32,8 +32,8 @@ func main() {
 	}
 
 	/*
-	Creando una instancia del tipo Repository del paquete repository
-	se debe especificar el tipo de struct que va a manejar la base de datos
+		Creando una instancia del tipo Repository del paquete repository
+		se debe especificar el tipo de struct que va a manejar la base de datos
 	*/
 	repo, err := repository.NewRepository[models.Vehiculo](db) //Crear la base de datos
 	if err != nil {

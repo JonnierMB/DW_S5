@@ -14,7 +14,7 @@ import (
 var (
 	listQuery   = "SELECT id, typ, color, model, brand, photo, price, disponibility FROM vehiculos limit $1 offset $2" //Servirá para listar todos los vehiculos
 	readQuery   = "SELECT id, typ, color, model, brand, photo, price, disponibility FROM vehiculos WHERE id = $1"      //placeholder $1 cierto valor
-	updateQuery = "UPDATE vehiculos SET %s WHERE id=:id"                                                               // time=:time, comment=:comment. reactions=:reactions
+	updateQuery = "UPDATE vehiculos SET %s WHERE id=:id"                                                               // disponibility=:disponibility
 )
 
 //Capa adicional, los controladores poseen toda la logica que comunica al repositorio con los handlers
