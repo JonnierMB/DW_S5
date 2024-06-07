@@ -73,14 +73,14 @@ func main() {
 	router := mux.NewRouter() //Definir objeto de tipo multiplexor Cuando la petición llegue, la petición llegará al mux
 	// Rutas para vehículos
 	router.HandleFunc("/vehicles", handlerVehicle.ListarVehiculos).Methods(http.MethodGet)
-	router.HandleFunc("/vehicles/{id}", handlerVehicle.TraerVehiculos).Methods(http.MethodGet) //Un unico vehiculo
-	router.HandleFunc("/vehicles/{id}", handlerVehicle.ActualizarVehiculo).Methods(http.MethodPatch)
+	router.HandleFunc("/vehicles/{id}", handlerVehicle.TraerVehiculos).Methods(http.MethodGet)       //Un unico vehiculo
+	router.HandleFunc("/vehicles/{id}", handlerVehicle.ActualizarVehiculo).Methods(http.MethodPatch) //Modificar un parametro en especifico
 
 	// Rutas para usuarios
 	router.HandleFunc("/users", handlerUser.ListarUsuarios).Methods(http.MethodGet)
 	router.HandleFunc("/users", handlerUser.CrearUsuario).Methods(http.MethodPost)
-	router.HandleFunc("/users/{id}", handlerUser.TraerUsuarios).Methods(http.MethodGet) //Un unico usuario
-	router.HandleFunc("/users/{id}", handlerUser.ActualizarUsuario).Methods(http.MethodPatch)
+	router.HandleFunc("/users/{id}", handlerUser.TraerUsuarios).Methods(http.MethodGet)       //Un unico usuario
+	router.HandleFunc("/users/{id}", handlerUser.ActualizarUsuario).Methods(http.MethodPatch) //Modificar un parametro en especifico
 
 	//********************************************************************************************************************
 	//*ASOCIAR EL SERVIDOR AL MULTIPLEXOR: EL SERVIDOR ES LA INSTANCIA QUE PERMITE ABRIR UN PUERTO Y QUEDARSE ESCUCHANDO**
