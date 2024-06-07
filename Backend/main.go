@@ -35,35 +35,53 @@ func main() {
 		Creando una instancia del tipo Repository del paquete repository
 		se debe especificar el tipo de struct que va a manejar la base de datos
 	*/
-	repo, err := repository.NewRepository[models.Vehiculo](db) //Crear la base de datos
+	//Handler para vehiculo
+	repoVehicle, err := repository.NewRepository[models.Vehiculo](db) //Crear la base de datos
 	if err != nil {
-		log.Fatalln("error conectando a la base de datos", err.Error())
+		log.Fatalln("error conectando a la base de datos vehiculo", err.Error())
 		return
 	}
-
-	controller, err := controllers.NewController(repo)
+	controllerVehicle, err := controllers.NewController(repoVehicle)
 	if err != nil {
-		log.Fatalf("fallo al crear una instancia de controller: %s", err.Error())
+		log.Fatalf("fallo al crear una instancia de controller vehiculo: %s", err.Error())
 		return
 	}
-
-	handler, err := handlers.NewHandlerVehiculo(controller)
+	handlerVehicle, err := handlers.NewHandlerVehiculo(controllerVehicle)
 	if err != nil {
-		log.Fatalf("fallo al crear una instancia de handler: %s", err.Error())
+		log.Fatalf("fallo al crear una instancia de handler vehiculo: %s", err.Error())
 		return
 	}
-
+	//Handler para usuarios
+	repoUser, err := repository.NewRepository[models.Usuario](db) //Crear la base de datos
+	if err != nil {
+		log.Fatalln("error conectando a la base de datos usuario", err.Error())
+		return
+	}
+	controllerUser, err := controllers.NewControllerUser(repoUser)
+	if err != nil {
+		log.Fatalf("fallo al crear una instancia de controller usuario: %s", err.Error())
+		return
+	}
+	handlerUser, err := handlers.NewHandlerUsuarios(controllerUser)
+	if err != nil {
+		log.Fatalf("fallo al crear una instancia de handler usuario: %s", err.Error())
+		return
+	}
 	/********************************MULTIPLEXOR Y ENRUTADOR***********************************/
 	//Permiten asociar una ruta a un metodo y a un Handler que atiende peticiones que vienen con el metodo
 	/* router (multiplexador) a los endpoints de la API (implementado con el paquete gorilla/mux) */
 	router := mux.NewRouter() //Definir objeto de tipo multiplexor Cuando la petición llegue, la petición llegará al mux
+	// Rutas para vehículos
+	router.HandleFunc("/vehicles", handlerVehicle.ListarVehiculos).Methods(http.MethodGet)
+	router.HandleFunc("/vehicles/{id}", handlerVehicle.TraerVehiculos).Methods(http.MethodGet) //Un unico vehiculo
+	router.HandleFunc("/vehicles/{id}", handlerVehicle.ActualizarVehiculo).Methods(http.MethodPatch)
 
-	//El mux identificará el metodo que se estará utilizando en la petición/hacia donde va (Endpoint), Ejecuta el metodo correspondiente del handler
-	router.Handle("/posts", http.HandlerFunc(handler.ListarVehiculos)).Methods(http.MethodGet) //ASOCIAR LOS HANDLER AL MULTIPLEXOR
-	//Crear un GET que traiga un unico Vehiculo parametro de ruta {id} path parameter
-	router.HandleFunc("/posts/{id}", http.HandlerFunc(handler.TraerVehiculos)).Methods(http.MethodGet) //Leer recursos especificos
-	//Crear un UPDATE que actualice un Vehiculo
-	router.HandleFunc("/posts/{id}", http.HandlerFunc(handler.ActualizarVehiculo)).Methods(http.MethodPatch) //Leer recursos especificos
+	// Rutas para usuarios
+	router.HandleFunc("/users", handlerUser.ListarUsuarios).Methods(http.MethodGet)
+	router.HandleFunc("/users", handlerUser.CrearUsuario).Methods(http.MethodPost)
+	router.HandleFunc("/users/{id}", handlerUser.TraerUsuarios).Methods(http.MethodGet) //Un unico usuario
+	router.HandleFunc("/users/{id}", handlerUser.ActualizarUsuario).Methods(http.MethodPatch)
+
 	//********************************************************************************************************************
 	//*ASOCIAR EL SERVIDOR AL MULTIPLEXOR: EL SERVIDOR ES LA INSTANCIA QUE PERMITE ABRIR UN PUERTO Y QUEDARSE ESCUCHANDO**
 	//********************************************************************************************************************
